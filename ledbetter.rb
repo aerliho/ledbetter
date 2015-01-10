@@ -3,9 +3,11 @@ require 'socket'
 require 'uri'
 require 'nagiosharder'
 
-nagios_user = ENV['NAGIOS_USER'] || raise('missing NAGIOS_USER')
-nagios_pass = ENV['NAGIOS_PASS'] || raise('missing NAGIOS_PASS')
-nagios_url  = ENV['NAGIOS_URL'] || raise('missing NAGIOS_URL')
+nagios_user        = ENV['NAGIOS_USER'] || raise('missing NAGIOS_USER')
+nagios_pass        = ENV['NAGIOS_PASS'] || raise('missing NAGIOS_PASS')
+nagios_url         = ENV['NAGIOS_URL'] || raise('missing NAGIOS_URL')
+nagios_version     = ENV['NAGIOS_VERSION'] || 3
+nagios_time_format = ENV['NAGIOS_TIME_FORMAT'] || 'iso8601'
 
 # connect to remote carbon socket
 if !ENV['DEBUG'].to_i.eql?(1)
@@ -23,7 +25,7 @@ end
 
 # connect to Nagios server
 begin
-  site = NagiosHarder::Site.new(nagios_url, nagios_user, nagios_pass)
+  site = NagiosHarder::Site.new(nagios_url, nagios_user, nagios_pass, nagios_version, nagios_time_format)
 rescue
   raise "unable to connect to NAGIOS_URL at #{nagios_url}"
 end
